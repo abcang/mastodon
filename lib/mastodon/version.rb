@@ -24,16 +24,21 @@ module Mastodon
       ''
     end
 
+    def commit_hash
+      ENV.fetch('COMMIT_HASH', '')
+    end
+
     def to_a
       [major, minor, patch, pre].compact
     end
 
     def to_s
-      [to_a.join('.'), flags].join
+      append = commit_hash.present? ? " + #{commit_hash}" : ''
+      [to_a.join('.'), flags, append].join
     end
 
     def source_base_url
-      'https://github.com/tootsuite/mastodon'
+      'https://github.com/abcang/mastodon'
     end
 
     # specify git tag or commit hash here
