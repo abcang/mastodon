@@ -73,6 +73,9 @@ gem 'webpush'
 gem 'json-ld-preloaded', '~> 2.2.1'
 gem 'rdf-normalize', '~> 0.3.1'
 
+# extra
+gem 'airbrake', '~> 5.0'
+
 group :development, :test do
   gem 'fabrication', '~> 2.16'
   gem 'fuubar', '~> 2.2'
