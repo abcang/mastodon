@@ -484,6 +484,7 @@ GEM
     sshkit (1.14.0)
       net-scp (>= 1.1.2)
       net-ssh (>= 2.8.0)
+    stackprof (0.2.10)
     statsd-instrument (2.1.4)
     strong_migrations (0.1.9)
       activerecord (>= 3.2.0)
@@ -619,6 +620,7 @@ DEPENDENCIES
   simple_form (~> 3.4)
   simplecov (~> 0.14)
   sprockets-rails (~> 3.2)
+  stackprof
   statsd-instrument (~> 2.1)
   strong_migrations
   twitter-text (~> 1.14)

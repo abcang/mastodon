@@ -75,6 +75,7 @@ gem 'rdf-normalize', '~> 0.3.1'
 
 # extra
 gem 'airbrake', '~> 5.0'
+gem 'stackprof'
 
 group :development, :test do
   gem 'fabrication', '~> 2.16'
