@@ -587,6 +587,22 @@
   position: absolute;
 }
 
+.focusable {
+  &:focus {
+    outline: 0;
+    background: lighten($ui-base-color, 4%);
+
+    &.status-direct {
+      background: lighten($ui-base-color, 12%);
+    }
+
+    .detailed-status,
+    .detailed-status__action-bar {
+      background: lighten($ui-base-color, 8%);
+    }
+  }
+}
+
 .status {
   padding: 8px 10px;
   padding-left: 68px;
@@ -714,6 +730,12 @@
 
   .status__display-name strong {
     color: $ui-base-lighter-color;
+  }
+
+  > span {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 }
 
@@ -879,9 +901,12 @@
   .account__header__display-name {
     color: $primary-text-color;
     display: inline-block;
+    width: 100%;
     font-size: 20px;
     line-height: 27px;
     font-weight: 500;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   .account__header__username {
@@ -890,6 +915,8 @@
     font-weight: 400;
     display: block;
     margin-bottom: 10px;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 }
 
@@ -1046,11 +1073,11 @@
   strong {
     color: $primary-text-color;
   }
+}
 
-  &.muted {
-    .emojione {
-      opacity: 0.5;
-    }
+.muted {
+  .emojione {
+    opacity: 0.5;
   }
 }
 
@@ -1065,6 +1092,8 @@
 
 .account__display-name strong {
   display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .detailed-status__application,
@@ -1141,6 +1170,12 @@
 
   .fa {
     color: $ui-highlight-color;
+  }
+
+  > span {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 }
 
@@ -1249,11 +1284,14 @@
 .navigation-bar__profile {
   flex: 1 1 auto;
   margin-left: 8px;
+  overflow: hidden;
 }
 
 .navigation-bar__profile-account {
   display: block;
   font-weight: 500;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .navigation-bar__profile-edit {

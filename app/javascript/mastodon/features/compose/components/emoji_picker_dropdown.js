@@ -2,11 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { defineMessages, injectIntl } from 'react-intl';
 import { EmojiPicker as EmojiPickerAsync } from '../../ui/util/async-components';
-import { Overlay } from 'react-overlays';
+import Overlay from 'react-overlays/lib/Overlay';
 import classNames from 'classnames';
 import ImmutablePropTypes from 'react-immutable-proptypes';
 import detectPassiveEvents from 'detect-passive-events';
-import { buildCustomEmojis } from '../../../emoji';
+import { buildCustomEmojis } from '../../emoji/emoji';
 
 const messages = defineMessages({
   emoji: { id: 'emoji_button.label', defaultMessage: 'Insert emoji' },
@@ -264,6 +264,7 @@ export default class EmojiPickerDropdown extends React.PureComponent {
 
   static propTypes = {
     custom_emojis: ImmutablePropTypes.list,
+    autoPlay: PropTypes.bool,
     intl: PropTypes.object.isRequired,
     onPickEmoji: PropTypes.func.isRequired,
   };
@@ -278,6 +279,8 @@ export default class EmojiPickerDropdown extends React.PureComponent {
   }
 
   onShowDropdown = () => {
+    const { autoPlay } = this.props;
+
     this.setState({ active: true });
 
     if (!EmojiPicker) {
@@ -287,7 +290,7 @@ export default class EmojiPickerDropdown extends React.PureComponent {
         EmojiPicker = EmojiMart.Picker;
         Emoji = EmojiMart.Emoji;
         // populate custom emoji in search
-        EmojiMart.emojiIndex.search('', { custom: buildCustomEmojis(this.props.custom_emojis) });
+        EmojiMart.emojiIndex.search('', { custom: buildCustomEmojis(this.props.custom_emojis, autoPlay) });
         this.setState({ loading: false });
       }).catch(() => {
         this.setState({ loading: false });
