@@ -7,3 +7,9 @@ Airbrake.configure do |config|
   config.environment = Rails.env
   config.ignore_environments = %w(development test)
 end
+
+Airbrake.add_filter do |notice|
+  if notice[:errors].any? { |error| error[:type].constantize.ancestors.include?(HTTP::Error) }
+    notice.ignore!
+  end
+end
