@@ -21,7 +21,7 @@ module Mastodon
     end
 
     def flags
-      'rc2'
+      'rc3'
     end
 
     def commit_hash
