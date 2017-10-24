@@ -9,7 +9,10 @@ Airbrake.configure do |config|
 end
 
 Airbrake.add_filter do |notice|
-  if notice[:errors].any? { |error| error[:type].constantize.ancestors.include?(HTTP::Error) || error[:type] == 'Mastodon::UnexpectedResponseError' }
+  if notice[:errors].any? { |error|
+    error[:type].constantize.ancestors.include?(HTTP::Error) ||
+    ['Mastodon::UnexpectedResponseError', 'OpenSSL::SSL::SSLError'].include?(error[:type])
+  }
     notice.ignore!
   end
 end
