@@ -11,7 +11,7 @@ end
 Airbrake.add_filter do |notice|
   if notice[:errors].any? { |error|
     error[:type].constantize.ancestors.include?(HTTP::Error) ||
-    ['Mastodon::UnexpectedResponseError', 'OpenSSL::SSL::SSLError', 'Excon::Error::ServiceUnavailable'].include?(error[:type])
+    ['Mastodon::UnexpectedResponseError', 'OpenSSL::SSL::SSLError', 'Excon::Error::ServiceUnavailable', 'Excon::Error::Timeout', 'ActiveRecord::ConnectionTimeoutError'].include?(error[:type])
   }
     notice.ignore!
   end
