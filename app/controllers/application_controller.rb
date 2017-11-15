@@ -124,6 +124,6 @@ class ApplicationController < ActionController::Base
   end
 
   def write_log
-    ActiveRecord::Base.connection.instance_variable_get('@connection').general_log.writefile(path: "tmp/general_log/#{Date.current}.txt", req: request)
+    ActiveRecord::Base.connection.instance_variable_get('@connection').general_log.writefile(path: Rails.root.join('tmp', 'general_log', "#{Date.current}.txt"), req: request)
   end
 end
