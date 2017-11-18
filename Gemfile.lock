@@ -324,7 +324,7 @@ GEM
     parser (2.4.0.0)
       ast (~> 2.2)
     pg (0.21.0)
-    pg-connection-general_log (0.0.1)
+    pg-connection-general_log (0.0.5)
       pg
     pghero (1.7.0)
       activerecord

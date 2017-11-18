@@ -22,7 +22,6 @@ class ApplicationController < ActionController::Base
 
   before_action :store_current_location, except: :raise_not_found, unless: :devise_controller?
   before_action :check_suspension, if: :user_signed_in?
-  after_action :write_log
 
   def raise_not_found
     raise ActionController::RoutingError, "No route matches #{params[:unmatched_route]}"
@@ -121,9 +120,5 @@ class ApplicationController < ActionController::Base
         render "errors/#{code}", layout: 'error', status: code
       end
     end
-  end
-
-  def write_log
-    ActiveRecord::Base.connection.instance_variable_get('@connection').general_log.writefile(path: Rails.root.join('tmp', 'general_log', "#{Date.current}.txt"), req: request)
   end
 end

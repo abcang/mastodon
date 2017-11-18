@@ -8,5 +8,5 @@ use StackProf::Middleware,
     interval: 1000,
     save_every: 5,
     path: 'tmp/stackprof'
+use PG::Connection::GeneralLog::Middleware, enabled: true, path: Rails.root.join('tmp', 'general_log')
 run Rails.application
-
