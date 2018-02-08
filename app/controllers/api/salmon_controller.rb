@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class Api::SalmonController < Api::BaseController
+  include SignatureVerification
+
   before_action :set_account
   respond_to :txt
 
