@@ -52,7 +52,7 @@ class User < ApplicationRecord
   devise :registerable, :recoverable, :rememberable, :trackable, :validatable,
          :confirmable
 
-  devise :pam_authenticatable
+  devise :pam_authenticatable if Devise.pam_authentication
   devise :omniauthable
 
   belongs_to :account, inverse_of: :user
@@ -60,6 +60,7 @@ class User < ApplicationRecord
   accepts_nested_attributes_for :account
 
   has_many :applications, class_name: 'Doorkeeper::Application', as: :owner
+  has_many :backups, inverse_of: :user
 
   validates :locale, inclusion: I18n.available_locales.map(&:to_s), if: :locale?
   validates_with BlacklistedEmailValidator, if: :email_changed?
@@ -84,7 +85,7 @@ class User < ApplicationRecord
   has_many :session_activations, dependent: :destroy
 
   delegate :auto_play_gif, :default_sensitive, :unfollow_modal, :boost_modal, :delete_modal,
-           :reduce_motion, :system_font_ui, :noindex, :theme,
+           :reduce_motion, :system_font_ui, :noindex, :theme, :display_sensitive_media,
            to: :settings, prefix: :setting, allow_nil: false
 
   attr_accessor :invite_code

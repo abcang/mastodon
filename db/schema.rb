@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180204034416) do
+ActiveRecord::Schema.define(version: 20180211015820) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -90,6 +90,18 @@ ActiveRecord::Schema.define(version: 20180204034416) do
     t.datetime "updated_at", null: false
     t.index ["account_id"], name: "index_admin_action_logs_on_account_id"
     t.index ["target_type", "target_id"], name: "index_admin_action_logs_on_target_type_and_target_id"
+  end
+
+  create_table "backups", force: :cascade do |t|
+    t.bigint "user_id"
+    t.string "dump_file_name"
+    t.string "dump_content_type"
+    t.integer "dump_file_size"
+    t.datetime "dump_updated_at"
+    t.boolean "processed", default: false, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_backups_on_user_id"
   end
 
   create_table "blocks", force: :cascade do |t|
@@ -195,7 +207,7 @@ ActiveRecord::Schema.define(version: 20180204034416) do
   end
 
   create_table "invites", force: :cascade do |t|
-    t.bigint "user_id"
+    t.bigint "user_id", null: false
     t.string "code", default: "", null: false
     t.datetime "expires_at"
     t.integer "max_uses"
@@ -516,7 +528,7 @@ ActiveRecord::Schema.define(version: 20180204034416) do
     t.json "data"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.bigint "user_id"
+    t.bigint "user_id", null: false
     t.index ["user_id"], name: "index_web_settings_on_user_id", unique: true
   end
 
