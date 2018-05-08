@@ -60,6 +60,7 @@ gem 'nsa', '~> 0.2'
 gem 'oj', '~> 3.5'
 gem 'ostatus2', '~> 2.0'
 gem 'ox', '~> 2.9'
+gem 'posix-spawn', '~> 0.3'
 gem 'pundit', '~> 1.1'
 gem 'premailer-rails'
 gem 'rack-attack', '~> 5.2'
@@ -100,6 +101,7 @@ group :development, :test do
   gem 'fabrication', '~> 2.20'
   gem 'fuubar', '~> 2.2'
   gem 'i18n-tasks', '~> 0.9', require: false
+  gem 'pry-byebug', '~> 3.6'
   gem 'pry-rails', '~> 0.3'
   gem 'rspec-rails', '~> 3.7'
 end
@@ -115,7 +117,6 @@ group :test do
   gem 'microformats', '~> 4.0'
   gem 'rails-controller-testing', '~> 1.0'
   gem 'rspec-sidekiq', '~> 3.0'
-  gem 'rspec-retry', '~> 0.5', require: false
   gem 'simplecov', '~> 0.16', require: false
   gem 'webmock', '~> 3.3'
   gem 'parallel_tests', '~> 2.21'
