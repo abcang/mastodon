@@ -15,6 +15,7 @@ ERRBIT_IGNORE_ERRORS = %w[
   Excon::Error::Timeout
   ActiveRecord::ConnectionTimeoutError
   SignalException
+  Stoplight::Error::RedLight
 ].freeze
 
 ERRBIT_IGNORE_WORKER_ERRORS = {
