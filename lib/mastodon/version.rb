@@ -37,8 +37,12 @@ module Mastodon
       [to_a.join('.'), flags, append].join
     end
 
+    def repository
+      'abcang/mastodon'
+    end
+
     def source_base_url
-      'https://github.com/abcang/mastodon'
+      "https://github.com/#{repository}"
     end
 
     # specify git tag or commit hash here
