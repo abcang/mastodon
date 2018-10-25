@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_09_29_222014) do
+ActiveRecord::Schema.define(version: 2018_10_24_224956) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -22,6 +22,7 @@ ActiveRecord::Schema.define(version: 2018_09_29_222014) do
     t.bigint "status_ids", default: [], null: false, array: true
     t.bigint "last_status_id"
     t.integer "lock_version", default: 0, null: false
+    t.boolean "unread", default: false, null: false
     t.index ["account_id", "conversation_id", "participant_account_ids"], name: "index_unique_conversations", unique: true
     t.index ["account_id"], name: "index_account_conversations_on_account_id"
     t.index ["conversation_id"], name: "index_account_conversations_on_conversation_id"
@@ -185,6 +186,7 @@ ActiveRecord::Schema.define(version: 2018_09_29_222014) do
     t.datetime "updated_at", null: false
     t.integer "severity", default: 0
     t.boolean "reject_media", default: false, null: false
+    t.boolean "reject_reports", default: false, null: false
     t.index ["domain"], name: "index_domain_blocks_on_domain", unique: true
   end
 
@@ -301,6 +303,7 @@ ActiveRecord::Schema.define(version: 2018_09_29_222014) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "account_id"
+    t.boolean "silent", default: false, null: false
     t.index ["account_id", "status_id"], name: "index_mentions_on_account_id_and_status_id", unique: true
     t.index ["status_id"], name: "index_mentions_on_status_id"
   end
@@ -370,6 +373,15 @@ ActiveRecord::Schema.define(version: 2018_09_29_222014) do
     t.boolean "confidential", default: true, null: false
     t.index ["owner_id", "owner_type"], name: "index_oauth_applications_on_owner_id_and_owner_type"
     t.index ["uid"], name: "index_oauth_applications_on_uid", unique: true
+  end
+
+  create_table "pghero_space_stats", force: :cascade do |t|
+    t.text "database"
+    t.text "schema"
+    t.text "relation"
+    t.bigint "size"
+    t.datetime "captured_at"
+    t.index ["database", "captured_at"], name: "index_pghero_space_stats_on_database_and_captured_at"
   end
 
   create_table "preview_cards", force: :cascade do |t|
