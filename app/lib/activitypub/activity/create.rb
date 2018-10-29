@@ -2,7 +2,7 @@
 
 class ActivityPub::Activity::Create < ActivityPub::Activity
   SUPPORTED_TYPES = %w(Note).freeze
-  CONVERTED_TYPES = %w(Image Video Article).freeze
+  CONVERTED_TYPES = %w(Image Video Article Page).freeze
 
   def perform
     return if delete_arrived_first?(object_uri) || unsupported_object_type? || invalid_origin?(@object['id'])
@@ -90,11 +90,11 @@ class ActivityPub::Activity::Create < ActivityPub::Activity
 
     # If the payload was delivered to a specific inbox, the inbox owner must have
     # access to it, unless they already have access to it anyway
-    return if @options[:delivered_to_account_id].nil? || @mentions.any? { mention.account_id == @options[:delivered_to_account_id] }
+    return if @options[:delivered_to_account_id].nil? || @mentions.any? { |mention| mention.account_id == @options[:delivered_to_account_id] }
 
     @mentions << Mention.new(account_id: @options[:delivered_to_account_id], silent: true)
 
-    return unless @param[:visibility] == :direct
+    return unless @params[:visibility] == :direct
 
     @params[:visibility] = :limited
   end
@@ -129,7 +129,7 @@ class ActivityPub::Activity::Create < ActivityPub::Activity
     return if tag['name'].blank?
 
     hashtag = tag['name'].gsub(/\A#/, '').mb_chars.downcase
-    hashtag = Tag.where(name: hashtag).first_or_create(name: hashtag)
+    hashtag = Tag.where(name: hashtag).first_or_create!(name: hashtag)
 
     return if @tags.include?(hashtag)
 
