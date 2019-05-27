@@ -14,6 +14,8 @@ import DrawerLoading from './drawer_loading';
 import BundleColumnError from './bundle_column_error';
 import { Compose, Notifications, HomeTimeline, CommunityTimeline, PublicTimeline, HashtagTimeline, DirectTimeline, FavouritedStatuses, ListTimeline } from '../../ui/util/async-components';
 import Icon from 'mastodon/components/icon';
+import ComposePanel from './compose_panel';
+import NavigationPanel from './navigation_panel';
 
 import detectPassiveEvents from 'detect-passive-events';
 import { scrollRight } from '../../../scroll';
@@ -163,21 +165,36 @@ class ColumnsArea extends ImmutablePureComponent {
     if (singleColumn) {
       const floatingActionButton = shouldHideFAB(this.context.router.history.location.pathname) ? null : <Link key='floating-action-button' to='/statuses/new' className='floating-action-button' aria-label={intl.formatMessage(messages.publish)}><Icon id='pencil' /></Link>;
 
-      return columnIndex !== -1 ? [
-        <TabsBar key='tabs' />,
-
+      const content = columnIndex !== -1 ? (
         <ReactSwipeableViews key='content' index={columnIndex} onChangeIndex={this.handleSwipe} onTransitionEnd={this.handleAnimationEnd} animateTransitions={shouldAnimate} springConfig={{ duration: '400ms', delay: '0s', easeFunction: 'ease' }} style={{ height: '100%' }}>
           {links.map(this.renderView)}
-        </ReactSwipeableViews>,
+        </ReactSwipeableViews>
+      ) : (
+        <div key='content' className='columns-area columns-area--mobile'>{children}</div>
+      );
 
-        floatingActionButton,
-      ] : [
-        <TabsBar key='tabs' />,
+      return (
+        <div className='columns-area__panels'>
+          <div className='columns-area__panels__pane columns-area__panels__pane--compositional'>
+            <div className='columns-area__panels__pane__inner'>
+              <ComposePanel />
+            </div>
+          </div>
 
-        <div key='content' className='columns-area columns-area--mobile'>{children}</div>,
+          <div className='columns-area__panels__main'>
+            <TabsBar key='tabs' />
+            {content}
+          </div>
 
-        floatingActionButton,
-      ];
+          <div className='columns-area__panels__pane columns-area__panels__pane--start columns-area__panels__pane--navigational'>
+            <div className='columns-area__panels__pane__inner'>
+              <NavigationPanel />
+            </div>
+          </div>
+
+          {floatingActionButton}
+        </div>
+      );
     }
 
     return (
