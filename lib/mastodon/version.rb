@@ -16,12 +16,12 @@ module Mastodon
       2
     end
 
-    def pre
-      nil
-    end
-
     def flags
       ''
+    end
+
+    def suffix
+      commit_hash.present? ? " + #{commit_hash}" : ''
     end
 
     def commit_hash
@@ -29,12 +29,11 @@ module Mastodon
     end
 
     def to_a
-      [major, minor, patch, pre].compact
+      [major, minor, patch].compact
     end
 
     def to_s
-      append = commit_hash.present? ? " + #{commit_hash}" : ''
-      [to_a.join('.'), flags, append].join
+      [to_a.join('.'), flags, suffix].join
     end
 
     def repository
