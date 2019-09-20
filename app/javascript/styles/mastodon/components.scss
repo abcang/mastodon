@@ -421,6 +421,10 @@
     border: 0;
     outline: 0;
 
+    &::placeholder {
+      color: $dark-text-color;
+    }
+
     &:focus {
       outline: 0;
     }
@@ -507,6 +511,7 @@
       flex: 1 1 auto;
       overflow: hidden;
       text-overflow: ellipsis;
+      white-space: nowrap;
     }
 
     strong {
@@ -515,8 +520,10 @@
 
     &__uses {
       flex: 0 0 auto;
-      width: 80px;
       text-align: right;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
   }
 
@@ -3449,6 +3456,10 @@ a.status-card.compact:hover {
     height: auto;
   }
 
+  &--click-thru {
+    pointer-events: none;
+  }
+
   &--hidden {
     display: none;
   }
@@ -3475,6 +3486,12 @@ a.status-card.compact:hover {
     &:active {
       .spoiler-button__overlay__label {
         background: rgba($base-overlay-background, 0.8);
+      }
+    }
+
+    &:disabled {
+      .spoiler-button__overlay__label {
+        background: rgba($base-overlay-background, 0.5);
       }
     }
   }
@@ -3520,6 +3537,28 @@ a.status-card.compact:hover {
   .column-select {
     &__control {
       @include search-input;
+
+      &::placeholder {
+        color: lighten($darker-text-color, 4%);
+      }
+
+      &::-moz-focus-inner {
+        border: 0;
+      }
+
+      &::-moz-focus-inner,
+      &:focus,
+      &:active {
+        outline: 0 !important;
+      }
+
+      &:focus {
+        background: lighten($ui-base-color, 4%);
+      }
+
+      @media screen and (max-width: 600px) {
+        font-size: 16px;
+      }
     }
 
     &__placeholder {
@@ -4033,6 +4072,28 @@ a.status-card.compact:hover {
   padding-right: 30px;
   line-height: 18px;
   font-size: 16px;
+
+  &::placeholder {
+    color: lighten($darker-text-color, 4%);
+  }
+
+  &::-moz-focus-inner {
+    border: 0;
+  }
+
+  &::-moz-focus-inner,
+  &:focus,
+  &:active {
+    outline: 0 !important;
+  }
+
+  &:focus {
+    background: lighten($ui-base-color, 4%);
+  }
+
+  @media screen and (max-width: 600px) {
+    font-size: 16px;
+  }
 }
 
 .search__icon {
