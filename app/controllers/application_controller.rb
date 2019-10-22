@@ -34,6 +34,9 @@ class ApplicationController < ActionController::Base
 
   skip_before_action :verify_authenticity_token, only: :raise_not_found
 
+  # extension
+  before_action :set_sentry_user
+
   def raise_not_found
     raise ActionController::RoutingError, "No route matches #{params[:unmatched_route]}"
   end
@@ -140,5 +143,10 @@ class ApplicationController < ActionController::Base
       format.any  { head code }
       format.html { render "errors/#{code}", layout: 'error', status: code }
     end
+  end
+
+  # extension
+  def set_sentry_user
+    Raven.user_context(id: current_user.id) if current_user
   end
 end

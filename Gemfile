@@ -101,7 +101,7 @@ gem 'json-ld-preloaded', '~> 3.0'
 gem 'rdf-normalize', '~> 0.3'
 
 # extra
-gem 'airbrake', '~> 5.0'
+gem 'sentry-raven'
 gem 'stackprof'
 gem 'pg-connection-general_log'
 
