@@ -15,7 +15,6 @@ Raven.configure do |config|
     ActionController::UnknownFormat
     ActionController::ParameterMissing
     ActiveRecord::RecordNotUnique
-    ActionView::MissingTemplate
     Mastodon::UnexpectedResponseError
     Mastodon::RaceConditionError
     Mastodon::HostValidationError
