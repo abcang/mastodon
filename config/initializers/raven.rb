@@ -47,6 +47,7 @@ module ShouldCaptureChecker
     NotificationWorker
     Import::RelationshipWorker
     Web::PushNotificationWorker
+    RedownloadMediaWorker
   ].freeze
 
   NETWORK_CONTROLLERS_OR_CONCERNS = %w[
