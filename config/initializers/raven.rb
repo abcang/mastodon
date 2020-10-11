@@ -21,6 +21,7 @@ Raven.configure do |config|
 
     Fog::Storage::OpenStack::NotFound
     Excon::Error::Forbidden
+    Excon::Error::BadRequest
   ]
 
   config.should_capture = ->(message_or_exc) do
