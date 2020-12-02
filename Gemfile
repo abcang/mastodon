@@ -17,7 +17,7 @@ gem 'makara', '~> 0.4'
 gem 'pghero', '~> 2.7'
 gem 'dotenv-rails', '~> 2.7'
 
-gem 'aws-sdk-s3', '~> 1.84', require: false
+gem 'aws-sdk-s3', '~> 1.85', require: false
 gem 'fog-core', '<= 2.1.0'
 gem 'fog-openstack', '~> 0.3', require: false
 gem 'paperclip', '~> 6.0'
@@ -44,6 +44,7 @@ gem 'net-ldap', '~> 0.16'
 gem 'omniauth-cas', '~> 2.0'
 gem 'omniauth-saml', '~> 1.10'
 gem 'omniauth', '~> 1.9'
+gem 'omniauth-rails_csrf_protection', '~> 0.1'
 
 gem 'color_diff', '~> 0.1'
 gem 'discard', '~> 1.2'
@@ -128,7 +129,7 @@ group :test do
   gem 'rspec-sidekiq', '~> 3.1'
   gem 'simplecov', '~> 0.19', require: false
   gem 'webmock', '~> 3.10'
-  gem 'parallel_tests', '~> 3.3'
+  gem 'parallel_tests', '~> 3.4'
   gem 'rspec_junit_formatter', '~> 0.4'
 end
 
