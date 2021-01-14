@@ -819,4 +819,32 @@ RSpec.describe Account, type: :model do
       expect(subject.reload.followers_count).to eq 15
     end
   end
+
+  describe 'save_account_stat!' do
+    subject { Fabricate(:account) }
+
+    it 'save changed value in multi-threaded an environment when account_stat exists' do
+      subject.statuses_count = 0
+      subject.save
+
+      wait_for_start = true
+
+      threads = Array.new(3) do
+        Thread.new do
+          account = Account.find(subject.id)
+          account.statuses_count = 10
+          true while wait_for_start
+          account.save
+        end
+      end
+
+      sleep 1
+
+      expect do
+        wait_for_start = false
+        threads.each(&:join)
+      end.not_to raise_error
+      expect(subject.reload.statuses_count).to eq 10
+    end
+  end
 end
