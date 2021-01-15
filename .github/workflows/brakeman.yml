@@ -1,0 +1,36 @@
+name: rubocop
+
+on:
+  push:
+    branches:
+      - testingmstdn
+  pull_request:
+
+jobs:
+  rubocop:
+    runs-on: ubuntu-latest
+    container:
+      image: ruby:2.7-buster
+    steps:
+    - uses: actions/checkout@v1
+
+    - name: Install system dependencies
+      run: |
+        apt update
+        apt install -y git libicu-dev libidn11-dev libprotobuf-dev protobuf-compiler
+
+    - name: Cache ruby dependencies
+      uses: actions/cache@v1
+      with:
+        path: vendor/bundle
+        key: v1-ruby-dependencies-${{ hashFiles('.ruby-version') }}-${{ hashFiles('Gemfile.lock') }}
+        restore-keys: |
+          v1-ruby-dependencies-${{ hashFiles('.ruby-version') }}-${{ hashFiles('Gemfile.lock') }}
+          v1-ruby-dependencies-${{ hashFiles('.ruby-version') }}-
+          v1-ruby-dependencies-
+
+    - name: bundle install
+      run: bundle install --clean --jobs 4 --path ./vendor/bundle/ --retry 3 --without production
+
+    - name: Run brakeman
+      run: bundle exec brakeman --exit-on-error
