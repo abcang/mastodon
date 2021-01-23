@@ -1,13 +1,9 @@
 # frozen_string_literal: true
 
-Raven.configure do |config|
+Sentry.init do |config|
   config.dsn = ENV['SENTRY_DSN']
 
-  config.environments = %w[production]
-
-  config.async = ->(event) {
-    Thread.new { Raven.send_event(event) }
-  }
+  config.enabled_environments = %w[production]
 
   config.excluded_exceptions += %w[
     ActionController::InvalidAuthenticityToken
@@ -24,8 +20,10 @@ Raven.configure do |config|
     Excon::Error::BadRequest
   ]
 
-  config.should_capture = ->(message_or_exc) do
-    ShouldCaptureChecker.should_capture(Raven::Context.current, message_or_exc)
+  config.before_send = ->(event, hint) do
+    return if ShouldCaptureChecker.ignore?(event)
+
+    event
   end
 end
 
@@ -71,23 +69,23 @@ module ShouldCaptureChecker
   }.freeze
 
   class << self
-    def should_capture(context, message_or_exc)
-      return true unless message_or_exc.is_a? Exception
+    def ignore?(event)
+      return false unless event.exception
 
-      exception_name = message_or_exc.class.name
-      return false if ignore_by_sidekiq(context, exception_name)
-      return false if ignore_by_controller(context, exception_name)
+      exception_name = event.exception.values.last.type
+      transaction = event.transaction
+      return true if ignore_by_sidekiq(transaction, exception_name)
+      return true if ignore_by_controller(transaction, exception_name)
 
-      true
+      false
     end
 
     private
 
-    def ignore_by_sidekiq(context, exception_name)
-      sidekiq = context.extra.dig(:sidekiq)
-      return false unless sidekiq
+    def ignore_by_sidekiq(transaction, exception_name)
+      return false unless transaction&.start_with?('Sidekiq/')
 
-      worker_class = sidekiq.dig('class')
+      worker_class = transaction.split('Sidekiq/').last
       return true if IGNORE_WORKER_ERRORS[worker_class]&.include?(exception_name)
 
       # ActivityPub or 通信が頻繁に発生するWorkerではネットワーク系の例外を無視
@@ -103,14 +101,14 @@ module ShouldCaptureChecker
       false
     end
 
-    def ignore_by_controller(context, exception_name)
-      controller_class = context.rack_env&.dig('action_controller.instance')&.class
-      return false unless controller_class
+    def ignore_by_controller(transaction, exception_name)
+      return false unless transaction&.include?('#')
 
-      return true if IGNORE_CONTROLLER_ERRORS[controller_class.name]&.include?(exception_name)
+      controller_class_name = transaction.split('#').first
+      return true if IGNORE_CONTROLLER_ERRORS[controller_class_name]&.include?(exception_name)
 
       # SignatureVerificationがincludeされているコントローラ or 通信が頻繁に発生するコントローラではネットワーク系のエラーを無視
-      if controller_class.ancestors.any? { |klass| NETWORK_CONTROLLERS_OR_CONCERNS.include?(klass.name) }
+      if controller_class_name.constantize.ancestors.any? { |klass| NETWORK_CONTROLLERS_OR_CONCERNS.include?(klass.name) }
         return true if NETWORK_EXCEPTIONS.include?(exception_name)
       end
 

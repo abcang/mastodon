@@ -104,7 +104,9 @@ gem 'json-ld-preloaded', '~> 3.1'
 gem 'rdf-normalize', '~> 0.4'
 
 # extra
-gem 'sentry-raven'
+gem 'sentry-ruby'
+gem 'sentry-rails'
+gem 'sentry-sidekiq'
 gem 'stackprof'
 gem 'pg-connection-general_log'
 

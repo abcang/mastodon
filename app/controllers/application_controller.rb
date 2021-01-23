@@ -153,6 +153,6 @@ class ApplicationController < ActionController::Base
 
   # extension
   def set_sentry_user
-    Raven.user_context(id: current_user.id) if current_user
+    Sentry.set_user(id: current_user.id) if current_user
   end
 end
