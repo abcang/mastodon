@@ -20,7 +20,7 @@ Sentry.init do |config|
     Excon::Error::BadRequest
   ]
 
-  config.traces_sample_rate = 0.5
+  config.traces_sample_rate = 0.005
 
   config.before_send = ->(event, hint) do
     return if ShouldCaptureChecker.ignore?(event)
