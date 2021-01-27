@@ -107,7 +107,6 @@ gem 'rdf-normalize', '~> 0.4'
 gem 'sentry-ruby'
 gem 'sentry-rails'
 gem 'sentry-sidekiq'
-gem 'stackprof'
 gem 'pg-connection-general_log'
 
 group :development, :test do
