@@ -56,9 +56,13 @@ class Request
   end
 
   def perform
+    transaction = Sentry.get_current_scope.get_transaction
+    span = if transaction&.sampled ? transaction.start_child(op: :perform_request, description: "#{@verb} #{@url.to_s}") : nil
+
     begin
       response = http_client.public_send(@verb, @url.to_s, @options.merge(headers: headers))
     rescue => e
+      span&.finish
       raise e.class, "#{e.message} on #{@url}", e.backtrace[0]
     end
 
@@ -74,6 +78,7 @@ class Request
 
       yield response if block_given?
     ensure
+      span&.finish
       http_client.close unless http_client.persistent?
     end
   end
