@@ -21,6 +21,7 @@ Sentry.init do |config|
   ]
 
   config.traces_sample_rate = 0.01
+  config.breadcrumbs_logger = [:active_support_logger]
 
   config.before_send = ->(event, hint) do
     return if ShouldCaptureChecker.ignore?(event)
