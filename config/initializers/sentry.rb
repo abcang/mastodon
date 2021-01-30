@@ -3,7 +3,7 @@
 class ActiveModelSerializerSubscriber < Sentry::Rails::Tracing::AbstractSubscriber
   def self.subscribe!
     subscribe_to_event(ActiveModelSerializers::Logging::RENDER_EVENT) do |event_name, duration, payload|
-      record_on_current_span(op: event_name, start_timestamp: payload[:start_timestamp], description: "#{payload[:serializer].name} with #{payload[:adapter].name}", duration: duration)
+      record_on_current_span(op: event_name, start_timestamp: payload[:start_timestamp], description: "#{payload[:serializer].name} with #{payload[:adapter].class}", duration: duration)
     end
   end
 
