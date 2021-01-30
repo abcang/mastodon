@@ -57,7 +57,7 @@ class Request
 
   def perform
     transaction = Sentry.get_current_scope.get_transaction
-    span = if transaction&.sampled ? transaction.start_child(op: :perform_request, description: "#{@verb} #{@url.to_s}") : nil
+    span = transaction&.sampled ? transaction.start_child(op: :perform_request, description: "#{@verb} #{@url.to_s}") : nil
 
     begin
       response = http_client.public_send(@verb, @url.to_s, @options.merge(headers: headers))
