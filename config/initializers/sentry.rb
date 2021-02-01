@@ -33,7 +33,7 @@ Sentry.init do |config|
     Excon::Error::BadRequest
   ]
 
-  config.traces_sample_rate = 0.01
+  config.traces_sample_rate = 0.015
   config.breadcrumbs_logger = [:active_support_logger]
 
   config.before_send = ->(event, hint) do
