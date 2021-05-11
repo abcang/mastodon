@@ -1,4 +1,4 @@
-name: rubocop
+name: brakeman
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
   pull_request:
 
 jobs:
-  rubocop:
+  brakeman:
     runs-on: ubuntu-latest
     container:
       image: ruby:2.7-buster
